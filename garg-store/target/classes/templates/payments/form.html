@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Receive Payment')}"></head>
+<body>
+    <div th:replace="~{layout :: sidebar}"></div>
+    <div class="content">
+        <h1>Receive Payment</h1>
+        <form action="/payments" method="post">
+            <div>
+                <label>Receipt No:</label>
+                <input type="text" name="receiptNo" required maxlength="15"/>
+            </div>
+            <div>
+                <label>Client:</label>
+                <select name="clientCode" required>
+                    <option value="">-- Select Client --</option>
+                    <option th:each="c : ${clients}" th:value="${c.clientCode}" th:text="${c.clientCode + ' - ' + c.name + ' (DR: ' + c.drBalance + ')'}"></option>
+                </select>
+            </div>
+            <div>
+                <label>Date Received:</label>
+                <input type="date" name="dateReceived" required/>
+            </div>
+            <div>
+                <label>Amount:</label>
+                <input type="number" step="0.01" name="amountReceived" min="0.01" required/>
+            </div>
+            <div>
+                <label>Payment Mode:</label>
+                <select name="paymentMode">
+                    <option value="Cash">Cash</option>
+                    <option value="Cheque">Cheque</option>
+                    <option value="Online Transfer">Online Transfer</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success">Save Payment</button>
+                <a href="/payments" class="btn">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

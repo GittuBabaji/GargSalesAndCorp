@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Payments')}"></head>
+<body>
+    <div th:replace="~{layout :: sidebar}"></div>
+    <div class="content">
+        <h1>Payments Received <a href="/payments/new" class="btn btn-success">+ Receive Payment</a></h1>
+        <table>
+            <tr><th>Receipt No</th><th>Client</th><th>Date</th><th>Amount</th><th>Mode</th></tr>
+            <tr th:each="p : ${payments}">
+                <td th:text="${p.receiptNo}"></td>
+                <td th:text="${p.clientCode}"></td>
+                <td th:text="${p.dateReceived}"></td>
+                <td th:text="${p.amountReceived}"></td>
+                <td th:text="${p.paymentMode}"></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Suppliers')}"></head>
+<body>
+    <div th:replace="~{layout :: sidebar}"></div>
+    <div class="content">
+        <h1>Suppliers <a href="/suppliers/new" class="btn btn-success">+ Add Supplier</a></h1>
+        <table>
+            <tr><th>Code</th><th>Name</th><th>Address</th><th>Locality</th><th>Phone</th><th>GST No</th><th>Actions</th></tr>
+            <tr th:each="s : ${suppliers}">
+                <td th:text="${s.supplierCode}"></td>
+                <td th:text="${s.name}"></td>
+                <td th:text="${s.address}"></td>
+                <td th:text="${s.locality}"></td>
+                <td th:text="${s.phoneNo}"></td>
+                <td th:text="${s.gstNo}"></td>
+                <td>
+                    <a th:href="@{/suppliers/edit/{id}(id=${s.supplierCode})}" class="btn">Edit</a>
+                    <form th:action="@{/suppliers/delete/{id}(id=${s.supplierCode})}" method="post" style="display:inline;"
+                          onsubmit="return confirm('Delete this supplier?');">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

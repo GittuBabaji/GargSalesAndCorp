@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Clients')}"></head>
+<body>
+    <div th:replace="~{layout :: sidebar}"></div>
+    <div class="content">
+        <h1>Clients <a href="/clients/new" class="btn btn-success">+ Add New Client</a></h1>
+        <table>
+            <tr>
+                <th>Code</th><th>Name</th><th>Address</th><th>Locality</th>
+                <th>Phone</th><th>GST No</th><th>DR Balance</th><th>CR Balance</th><th>Actions</th>
+            </tr>
+            <tr th:each="c : ${clients}">
+                <td th:text="${c.clientCode}"></td>
+                <td th:text="${c.name}"></td>
+                <td th:text="${c.address}"></td>
+                <td th:text="${c.locality}"></td>
+                <td th:text="${c.phoneNo}"></td>
+                <td th:text="${c.gstNo}"></td>
+                <td th:text="${c.drBalance}"></td>
+                <td th:text="${c.crBalance}"></td>
+                <td>
+                    <a th:href="@{/clients/edit/{id}(id=${c.clientCode})}" class="btn">Edit</a>
+                    <form th:action="@{/clients/delete/{id}(id=${c.clientCode})}" method="post" style="display:inline;"
+                          onsubmit="return confirm('Delete this client?');">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

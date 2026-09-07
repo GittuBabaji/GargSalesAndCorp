@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Reports')}"></head>
+<body>
+    <div th:replace="~{layout :: sidebar}"></div>
+    <div class="content">
+        <h1>Reports</h1>
+        <div class="card-container">
+            <div class="card"><h3>Sales Report</h3><a href="/sales" class="btn">View Sales</a></div>
+            <div class="card"><h3>Purchase Report</h3><a href="/purchases" class="btn">View Purchases</a></div>
+            <div class="card"><h3>Inventory Report</h3><a href="/inventory" class="btn">View Inventory</a></div>
+            <div class="card"><h3>Client Dues</h3><a href="/clients" class="btn">View Clients</a></div>
+            <div class="card"><h3>Supplier Dues</h3><a href="/suppliers" class="btn">View Suppliers</a></div>
+            <div class="card"><h3>Payment Report</h3><a href="/payments" class="btn">View Payments</a></div>
+            <div class="card"><h3>Employee Expense</h3><a href="/employees" class="btn">View Employees</a></div>
+            <div class="card"><h3>Financial Report</h3><a href="/financial" class="btn">View Financial</a></div>
+        </div>
+    </div>
+</body>
+</html>

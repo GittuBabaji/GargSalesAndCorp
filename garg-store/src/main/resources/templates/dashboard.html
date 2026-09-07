@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Dashboard')}"></head>
+<body>
+    <div th:replace="~{layout :: sidebar}"></div>
+    <div class="content">
+        <h1>Dashboard</h1>
+        <div class="card-container">
+            <div class="card">
+                <h3>Total Clients</h3>
+                <div class="value" th:text="${totalClients}">0</div>
+            </div>
+            <div class="card">
+                <h3>Total Suppliers</h3>
+                <div class="value" th:text="${totalSuppliers}">0</div>
+            </div>
+            <div class="card">
+                <h3>Stock Items</h3>
+                <div class="value" th:text="${totalItems}">0</div>
+            </div>
+            <div class="card">
+                <h3>Total Employees</h3>
+                <div class="value" th:text="${totalEmployees}">0</div>
+            </div>
+            <div class="card">
+                <h3>Total Sales (&#8377;)</h3>
+                <div class="value" th:text="${#numbers.formatDecimal(totalSales, 1, 2)}">0</div>
+            </div>
+            <div class="card">
+                <h3>Total Purchases (&#8377;)</h3>
+                <div class="value" th:text="${#numbers.formatDecimal(totalPurchases, 1, 2)}">0</div>
+            </div>
+        </div>
+
+        <h2>Low Stock Alerts</h2>
+        <table th:if="${not #lists.isEmpty(lowStockItems)}">
+            <tr><th>Item Code</th><th>Item Name</th><th>Quantity</th><th>Reorder Level</th></tr>
+            <tr th:each="i : ${lowStockItems}">
+                <td th:text="${i.itemCode}"></td>
+                <td th:text="${i.itemName}"></td>
+                <td class="low-stock" th:text="${i.quantity}"></td>
+                <td th:text="${i.reorderLevel}"></td>
+            </tr>
+        </table>
+        <p th:if="${#lists.isEmpty(lowStockItems)}">All stock levels are healthy.</p>
+    </div>
+</body>
+</html>
