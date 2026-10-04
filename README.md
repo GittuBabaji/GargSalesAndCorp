@@ -1,5 +1,9 @@
 # Garg Variety Store - Billing and Inventory Management System
 
+🚀 **Live Demo:** [Click here to view the live application](https://<YOUR-RENDER-URL>.onrender.com)
+*(Note: Because this is hosted on a free tier, it may take 30-50 seconds to wake up if it hasn't been used in a while!)*
+
+
 ## 1. Project Overview
 A complete web application for managing retail store billing and inventory, built using Spring Boot, JdbcTemplate, Thymeleaf, and MySQL.
 
