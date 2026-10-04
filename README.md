@@ -1,6 +1,6 @@
 # Garg Variety Store - Billing and Inventory Management System
 
-🚀 **Live Demo:** [Click here to view the live application](https://<YOUR-RENDER-URL>.onrender.com)
+🚀 **Live Demo:** [Click here to view the live application](https://gargsalesandcorp.onrender.com/)
 *(Note: Because this is hosted on a free tier, it may take 30-50 seconds to wake up if it hasn't been used in a while!)*
 
 
