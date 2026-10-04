@@ -4,19 +4,49 @@
 <body>
     <div th:replace="~{layout :: sidebar}"></div>
     <div class="content">
-        <h1>Purchase History <a href="/purchases/new" class="btn btn-success">+ New Purchase</a></h1>
-        <table>
-            <tr><th>Bill No</th><th>Date</th><th>Supplier</th><th>Total Amount</th><th>Amount Paid</th><th>Balance Due</th><th>Actions</th></tr>
-            <tr th:each="p : ${purchases}">
-                <td th:text="${p.purchaseBillNo}"></td>
-                <td th:text="${p.billDate}"></td>
-                <td th:text="${p.supplierCode}"></td>
-                <td th:text="${p.totalAmount}"></td>
-                <td th:text="${p.amountPaid}"></td>
-                <td th:text="${p.balanceDue}"></td>
-                <td><a th:href="@{/purchases/{id}(id=${p.purchaseBillNo})}" class="btn">View</a></td>
-            </tr>
-        </table>
+        <h1>
+            <span>Purchase History</span>
+            <a href="/purchases/new" class="btn btn-success">+ New Purchase</a>
+        </h1>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Bill No</th>
+                        <th>Date</th>
+                        <th>Supplier</th>
+                        <th>Total Amount (&#8377;)</th>
+                        <th>Amount Paid (&#8377;)</th>
+                        <th>Balance Due (&#8377;)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="p : ${purchases}">
+                        <td><strong th:text="${p.purchaseBillNo}"></strong></td>
+                        <td th:text="${p.billDate}"></td>
+                        <td>
+                            <a th:href="@{/suppliers/view/{id}(id=${p.supplierCode})}" th:text="${p.supplierCode}" style="color: #3b82f6; font-weight: 500;"></a>
+                        </td>
+                        <td th:text="${#numbers.formatDecimal(p.totalAmount, 1, 2)}"></td>
+                        <td style="color: #059669;" th:text="${#numbers.formatDecimal(p.amountPaid, 1, 2)}"></td>
+                        <td>
+                            <span th:class="${p.balanceDue > 0 ? 'badge badge-danger' : 'badge badge-success'}"
+                                  th:text="${#numbers.formatDecimal(p.balanceDue, 1, 2)}"></span>
+                        </td>
+                        <td>
+                            <a th:href="@{/purchases/{id}(id=${p.purchaseBillNo})}" class="btn btn-sm btn-info">View</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(purchases)}">
+                        <td colspan="7" style="text-align: center; color: #64748b; padding: 25px;">No purchases found.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div th:replace="~{layout :: pagination('/purchases', ${currentPage}, ${totalPages}, ${totalRecords}, ${pageSize})}"></div>
     </div>
 </body>
 </html>

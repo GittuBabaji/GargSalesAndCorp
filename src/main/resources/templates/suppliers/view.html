@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Supplier Summary')}"></head>
+<body>
+    <div th:replace="~{layout :: sidebar}"></div>
+    <div class="content">
+        <h1>
+            <span>Supplier Summary: <span th:text="${supplier.name}">Supplier Name</span> (<span th:text="${supplier.supplierCode}">Code</span>)</span>
+            <div>
+                <a th:href="@{/suppliers/edit/{id}(id=${supplier.supplierCode})}" class="btn">Edit Supplier</a>
+                <a href="/suppliers" class="btn btn-secondary">Back to Suppliers</a>
+            </div>
+        </h1>
+
+        <!-- Supplier Info & KPI Cards -->
+        <div class="card-container">
+            <div class="card">
+                <h3>Contact & Locality</h3>
+                <div style="font-size: 0.95rem; font-weight: 600; color: #1e293b; margin-bottom: 4px;" th:text="${supplier.phoneNo != null ? supplier.phoneNo : '-'}">Phone</div>
+                <div style="font-size: 0.85rem; color: #64748b;" th:text="${supplier.locality}">Locality</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; margin-top: 4px;" th:text="${supplier.address}">Address</div>
+                <div style="font-size: 0.8rem; color: #64748b; margin-top: 4px;">GST: <strong th:text="${supplier.gstNo != null ? supplier.gstNo : 'Unregistered'}"></strong></div>
+            </div>
+            <div class="card">
+                <h3>Total Invoiced (&#8377;)</h3>
+                <div class="value" th:text="${#numbers.formatDecimal(supplier.totalPurchases, 1, 2)}">0.00</div>
+                <div style="font-size: 0.85rem; color: #64748b; margin-top: 4px;">Total Bills: <strong th:text="${supplier.totalBills}">0</strong></div>
+            </div>
+            <div class="card">
+                <h3>Total Amount Paid (&#8377;)</h3>
+                <div class="value" style="color: #059669;" th:text="${#numbers.formatDecimal(supplier.totalPaid, 1, 2)}">0.00</div>
+                <div style="font-size: 0.85rem; color: #64748b; margin-top: 4px;">Settled portion</div>
+            </div>
+            <div class="card">
+                <h3>Outstanding Payable (&#8377;)</h3>
+                <div class="value" style="color: #dc2626;" th:text="${#numbers.formatDecimal(supplier.totalDue, 1, 2)}">0.00</div>
+                <div style="font-size: 0.8rem; color: #64748b; margin-top: 4px;">Pending payment</div>
+            </div>
+        </div>
+
+        <!-- Purchase Bills History -->
+        <h2>Purchase Bills History</h2>
+        <div class="table-responsive">
+            <table class="no-filter">
+                <thead>
+                    <tr>
+                        <th>Bill No</th>
+                        <th>Bill Date</th>
+                        <th>Total Amount (&#8377;)</th>
+                        <th>Amount Paid (&#8377;)</th>
+                        <th>Balance Due (&#8377;)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="p : ${purchases}">
+                        <td><strong th:text="${p.purchaseBillNo}"></strong></td>
+                        <td th:text="${p.billDate}"></td>
+                        <td th:text="${#numbers.formatDecimal(p.totalAmount, 1, 2)}"></td>
+                        <td style="color: #059669;" th:text="${#numbers.formatDecimal(p.amountPaid, 1, 2)}"></td>
+                        <td>
+                            <span th:class="${p.balanceDue > 0 ? 'badge badge-danger' : 'badge badge-success'}"
+                                  th:text="${#numbers.formatDecimal(p.balanceDue, 1, 2)}"></span>
+                        </td>
+                        <td>
+                            <a th:href="@{/purchases/{id}(id=${p.purchaseBillNo})}" class="btn btn-sm btn-info">View Bill</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(purchases)}">
+                        <td colspan="6" style="text-align: center; color: #64748b; padding: 20px;">No purchase bills on record for this supplier.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

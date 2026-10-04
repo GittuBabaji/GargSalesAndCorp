@@ -1,13 +1,30 @@
 package com.example.gargstore.service;
-import com.example.gargstore.model.*; import com.example.gargstore.repository.*; import org.springframework.beans.factory.annotation.Autowired; import org.springframework.stereotype.Service; import org.springframework.transaction.annotation.Transactional; import java.util.List;
+
+import com.example.gargstore.model.*;
+import com.example.gargstore.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
+
 @Service
 public class PurchaseBillService {
     @Autowired private PurchaseBillRepository purRepo;
     @Autowired private StockItemRepository stockRepo;
-    
+
     public List<PurchaseBill> findAll() { return purRepo.findAll(); }
-    public PurchaseBill findById(String code) { PurchaseBill p = purRepo.findById(code); p.setItems(purRepo.findItems(code)); return p; }
-    
+    public List<PurchaseBill> findPaged(int page, int size) { return purRepo.findPaged(page, size); }
+    public List<PurchaseBill> findBySupplierCode(String supplierCode) { return purRepo.findBySupplierCode(supplierCode); }
+    public int count() { return purRepo.count(); }
+
+    public PurchaseBill findById(String code) {
+        PurchaseBill p = purRepo.findById(code);
+        if (p != null) {
+            p.setItems(purRepo.findItems(code));
+        }
+        return p;
+    }
+
     @Transactional
     public void createPurchase(PurchaseBill bill, List<PurchaseBillItem> items) {
         double total = 0;

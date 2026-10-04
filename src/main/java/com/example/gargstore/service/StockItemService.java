@@ -1,9 +1,16 @@
 package com.example.gargstore.service;
-import com.example.gargstore.model.StockItem; import com.example.gargstore.repository.StockItemRepository; import org.springframework.beans.factory.annotation.Autowired; import org.springframework.stereotype.Service; import java.util.List;
+
+import com.example.gargstore.model.StockItem;
+import com.example.gargstore.repository.StockItemRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.List;
+
 @Service
 public class StockItemService {
     @Autowired private StockItemRepository repo;
     public List<StockItem> findAll() { return repo.findAll(); }
+    public List<StockItem> findPaged(int page, int size) { return repo.findPaged(page, size); }
     public List<StockItem> findLowStock() { return repo.findLowStock(); }
     public StockItem findById(String code) { return repo.findById(code); }
     public void save(StockItem s) { repo.save(s); }

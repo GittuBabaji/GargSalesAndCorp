@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const tables = document.querySelectorAll('.content table');
     
     tables.forEach(table => {
+        // Skip tables marked as no-filter
+        if (table.classList.contains('no-filter')) return;
+
         // 1. Add Filter Input
         const filterWrapper = document.createElement('div');
         filterWrapper.style.marginBottom = '15px';
@@ -10,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const filterInput = document.createElement('input');
         filterInput.type = 'text';
-        filterInput.placeholder = 'Search / Filter records...';
+        filterInput.placeholder = 'Search / Filter visible records...';
         filterInput.style.padding = '8px 12px';
         filterInput.style.border = '1px solid #cbd5e1';
         filterInput.style.borderRadius = '6px';
@@ -38,6 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // 2. Add Sorting Logic
         const headers = table.querySelectorAll('th');
         headers.forEach((header, index) => {
+            // Do not make 'Actions' column sortable
+            if (header.textContent.trim().toLowerCase() === 'actions') return;
+
             header.style.cursor = 'pointer';
             header.title = 'Click to sort';
             

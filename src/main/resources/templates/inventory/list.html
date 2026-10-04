@@ -4,34 +4,64 @@
 <body>
     <div th:replace="~{layout :: sidebar}"></div>
     <div class="content">
-        <h1>Inventory <a href="/inventory/new" class="btn btn-success">+ Add Item</a></h1>
-        <table>
-            <tr>
-                <th>Code</th><th>Name</th><th>Category</th><th>Unit</th>
-                <th>Quantity</th><th>Cost Price</th><th>Selling Price</th><th>Reorder Level</th><th>Status</th><th>Actions</th>
-            </tr>
-            <tr th:each="i : ${items}">
-                <td th:text="${i.itemCode}"></td>
-                <td th:text="${i.itemName}"></td>
-                <td th:text="${i.category}"></td>
-                <td th:text="${i.unit}"></td>
-                <td th:text="${i.quantity}"></td>
-                <td th:text="${i.costPrice}"></td>
-                <td th:text="${i.sellingPrice}"></td>
-                <td th:text="${i.reorderLevel}"></td>
-                <td>
-                    <span th:if="${i.quantity <= i.reorderLevel}" class="low-stock">LOW STOCK</span>
-                    <span th:unless="${i.quantity <= i.reorderLevel}" style="color:green;">OK</span>
-                </td>
-                <td>
-                    <a th:href="@{/inventory/edit/{id}(id=${i.itemCode})}" class="btn">Edit</a>
-                    <form th:action="@{/inventory/delete/{id}(id=${i.itemCode})}" method="post" style="display:inline;"
-                          onsubmit="return confirm('Delete this item?');">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                </td>
-            </tr>
-        </table>
+        <h1>
+            <span>Inventory Management</span>
+            <a href="/inventory/new" class="btn btn-success">+ Add Item</a>
+        </h1>
+
+        <!-- Feedback Messages -->
+        <div th:if="${param.error}" class="alert" th:text="${param.error}"></div>
+        <div th:if="${param.success}" class="alert alert-success" th:text="${param.success}"></div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Unit</th>
+                        <th>Quantity</th>
+                        <th>Cost Price (&#8377;)</th>
+                        <th>Selling Price (&#8377;)</th>
+                        <th>Reorder Level</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="i : ${items}">
+                        <td><strong th:text="${i.itemCode}"></strong></td>
+                        <td th:text="${i.itemName}"></td>
+                        <td th:text="${i.category}"></td>
+                        <td th:text="${i.unit}"></td>
+                        <td th:text="${i.quantity}"></td>
+                        <td th:text="${#numbers.formatDecimal(i.costPrice, 1, 2)}"></td>
+                        <td th:text="${#numbers.formatDecimal(i.sellingPrice, 1, 2)}"></td>
+                        <td th:text="${i.reorderLevel}"></td>
+                        <td>
+                            <span th:if="${i.quantity <= i.reorderLevel}" class="low-stock">LOW STOCK</span>
+                            <span th:unless="${i.quantity <= i.reorderLevel}" class="badge badge-success">OK</span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <a th:href="@{/inventory/edit/{id}(id=${i.itemCode})}" class="btn btn-sm">Edit</a>
+                                <form th:action="@{/inventory/delete/{id}(id=${i.itemCode})}" method="post" class="inline-form"
+                                      onsubmit="return confirm('Delete this item?');">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(items)}">
+                        <td colspan="10" style="text-align: center; color: #64748b; padding: 25px;">No inventory items found.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div th:replace="~{layout :: pagination('/inventory', ${currentPage}, ${totalPages}, ${totalRecords}, ${pageSize})}"></div>
     </div>
 </body>
 </html>

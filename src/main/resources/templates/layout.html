@@ -19,7 +19,31 @@
         <a href="/payments">Payments</a>
         <a href="/employees">Employees</a>
         <a href="/financial">Financial Summary</a>
-        <a href="/reports">Reports</a>
+    </div>
+
+    <!-- Reusable Pagination Fragment -->
+    <div th:fragment="pagination(baseUrl, currentPage, totalPages, totalRecords, pageSize)" class="pagination-wrapper" th:if="${totalRecords > 0}">
+        <div class="pagination-info">
+            Showing <span th:text="${(currentPage - 1) * pageSize + 1}">1</span>
+            to <span th:text="${T(java.lang.Math).min(currentPage * pageSize, totalRecords)}">25</span>
+            of <span th:text="${totalRecords}">100</span> records
+        </div>
+        <div class="pagination-nav" th:if="${totalPages > 1}">
+            <a th:href="@{${baseUrl}(page=${currentPage - 1})}"
+               th:classappend="${currentPage <= 1} ? 'disabled' : ''">&laquo; Prev</a>
+
+            <th:block th:each="p : ${#numbers.sequence(1, totalPages)}">
+                <a th:if="${p >= currentPage - 2 and p <= currentPage + 2 or p == 1 or p == totalPages}"
+                   th:href="@{${baseUrl}(page=${p})}"
+                   th:text="${p}"
+                   th:classappend="${p == currentPage} ? 'active' : ''">1</a>
+                <span th:if="${(p == 2 and currentPage > 4) or (p == totalPages - 1 and currentPage < totalPages - 3)}"
+                      class="pagination-ellipsis">...</span>
+            </th:block>
+
+            <a th:href="@{${baseUrl}(page=${currentPage + 1})}"
+               th:classappend="${currentPage >= totalPages} ? 'disabled' : ''">Next &raquo;</a>
+        </div>
     </div>
 </body>
 </html>

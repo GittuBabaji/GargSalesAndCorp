@@ -4,20 +4,39 @@
 <body>
     <div th:replace="~{layout :: sidebar}"></div>
     <div class="content">
-        <h1 th:text="${supplier.supplierCode == null or supplier.supplierCode == ''} ? 'Add Supplier' : 'Edit Supplier'">Supplier Form</h1>
-        <form th:action="${supplier.supplierCode == null or supplier.supplierCode == ''} ? '/suppliers' : '/suppliers/update/' + ${supplier.supplierCode}" method="post">
+        <h1 th:text="${supplier.supplierCode == null or supplier.supplierCode == ''} ? 'Add New Supplier' : 'Edit Supplier (' + ${supplier.supplierCode} + ')'">Supplier Form</h1>
+        <form class="main-form" th:action="${supplier.supplierCode == null or supplier.supplierCode == ''} ? '/suppliers' : '/suppliers/update/' + ${supplier.supplierCode}" method="post">
+            <div th:if="${supplier.supplierCode != null and supplier.supplierCode != ''}">
+                <label>Supplier Code:</label>
+                <input type="text" th:value="${supplier.supplierCode}" readonly style="background:#e2e8f0; cursor:not-allowed;"/>
+            </div>
             <div th:if="${supplier.supplierCode == null or supplier.supplierCode == ''}">
                 <label>Supplier Code:</label>
-                <input type="text" name="supplierCode" required maxlength="10"/>
+                <input type="text" name="supplierCode" required maxlength="10" placeholder="e.g. SUP001"/>
             </div>
-            <div><label>Name:</label><input type="text" name="name" th:value="${supplier.name}" required maxlength="100"/></div>
-            <div><label>Address:</label><input type="text" name="address" th:value="${supplier.address}" maxlength="255"/></div>
-            <div><label>Locality:</label><input type="text" name="locality" th:value="${supplier.locality}" maxlength="100"/></div>
-            <div><label>Phone:</label><input type="text" name="phoneNo" th:value="${supplier.phoneNo}" maxlength="15"/></div>
-            <div><label>GST No:</label><input type="text" name="gstNo" th:value="${supplier.gstNo}" maxlength="20"/></div>
+            <div>
+                <label>Name:</label>
+                <input type="text" name="name" th:value="${supplier.name}" required maxlength="100"/>
+            </div>
+            <div>
+                <label>Address:</label>
+                <input type="text" name="address" th:value="${supplier.address}" maxlength="255"/>
+            </div>
+            <div>
+                <label>Locality:</label>
+                <input type="text" name="locality" th:value="${supplier.locality}" maxlength="100"/>
+            </div>
+            <div>
+                <label>Phone:</label>
+                <input type="text" name="phoneNo" th:value="${supplier.phoneNo}" maxlength="15"/>
+            </div>
+            <div>
+                <label>GST No:</label>
+                <input type="text" name="gstNo" th:value="${supplier.gstNo}" maxlength="20"/>
+            </div>
             <div class="form-actions">
                 <button type="submit" class="btn btn-success">Save</button>
-                <a href="/suppliers" class="btn">Cancel</a>
+                <a href="/suppliers" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
     </div>

@@ -4,11 +4,15 @@
 <body>
     <div th:replace="~{layout :: sidebar}"></div>
     <div class="content">
-        <h1 th:text="${client.clientCode == null or client.clientCode == ''} ? 'Add New Client' : 'Edit Client'">Client Form</h1>
-        <form th:action="${client.clientCode == null or client.clientCode == ''} ? '/clients' : '/clients/update/' + ${client.clientCode}" method="post">
+        <h1 th:text="${client.clientCode == null or client.clientCode == ''} ? 'Add New Client' : 'Edit Client (' + ${client.clientCode} + ')'">Client Form</h1>
+        <form class="main-form" th:action="${client.clientCode == null or client.clientCode == ''} ? '/clients' : '/clients/update/' + ${client.clientCode}" method="post">
+            <div th:if="${client.clientCode != null and client.clientCode != ''}">
+                <label>Client Code:</label>
+                <input type="text" th:value="${client.clientCode}" readonly style="background:#e2e8f0; cursor:not-allowed;"/>
+            </div>
             <div th:if="${client.clientCode == null or client.clientCode == ''}">
                 <label>Client Code:</label>
-                <input type="text" name="clientCode" required maxlength="10"/>
+                <input type="text" name="clientCode" required maxlength="10" placeholder="e.g. CL101"/>
             </div>
             <div>
                 <label>Name:</label>
@@ -40,7 +44,7 @@
             </div>
             <div class="form-actions">
                 <button type="submit" class="btn btn-success">Save</button>
-                <a href="/clients" class="btn">Cancel</a>
+                <a href="/clients" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
     </div>

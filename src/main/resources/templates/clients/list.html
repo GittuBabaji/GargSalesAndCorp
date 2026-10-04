@@ -4,30 +4,84 @@
 <body>
     <div th:replace="~{layout :: sidebar}"></div>
     <div class="content">
-        <h1>Clients <a href="/clients/new" class="btn btn-success">+ Add New Client</a></h1>
-        <table>
-            <tr>
-                <th>Code</th><th>Name</th><th>Address</th><th>Locality</th>
-                <th>Phone</th><th>GST No</th><th>DR Balance</th><th>CR Balance</th><th>Actions</th>
-            </tr>
-            <tr th:each="c : ${clients}">
-                <td th:text="${c.clientCode}"></td>
-                <td th:text="${c.name}"></td>
-                <td th:text="${c.address}"></td>
-                <td th:text="${c.locality}"></td>
-                <td th:text="${c.phoneNo}"></td>
-                <td th:text="${c.gstNo}"></td>
-                <td th:text="${c.drBalance}"></td>
-                <td th:text="${c.crBalance}"></td>
-                <td>
-                    <a th:href="@{/clients/edit/{id}(id=${c.clientCode})}" class="btn">Edit</a>
-                    <form th:action="@{/clients/delete/{id}(id=${c.clientCode})}" method="post" style="display:inline;"
-                          onsubmit="return confirm('Delete this client?');">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                </td>
-            </tr>
-        </table>
+        <h1>
+            <span>Clients Directory</span>
+            <a href="/clients/new" class="btn btn-success">+ Add New Client</a>
+        </h1>
+
+        <!-- Feedback Messages -->
+        <div th:if="${param.error}" class="alert" th:text="${param.error}"></div>
+        <div th:if="${param.success}" class="alert alert-success" th:text="${param.success}"></div>
+
+        <!-- Summary KPIs per Client Segment -->
+        <div class="card-container">
+            <div class="card">
+                <h3>Total Clients</h3>
+                <div class="value" th:text="${totalRecords}">0</div>
+            </div>
+            <div class="card">
+                <h3>Total Sales (&#8377;)</h3>
+                <div class="value" th:text="${#numbers.formatDecimal(totalSales, 1, 2)}">0.00</div>
+            </div>
+            <div class="card">
+                <h3>Total Collections (&#8377;)</h3>
+                <div class="value" th:text="${#numbers.formatDecimal(totalPayments, 1, 2)}">0.00</div>
+            </div>
+            <div class="card">
+                <h3>Total Outstanding Due (&#8377;)</h3>
+                <div class="value" style="color: #e11d48;" th:text="${#numbers.formatDecimal(totalDue, 1, 2)}">0.00</div>
+            </div>
+        </div>
+
+        <!-- Clients Table -->
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Locality</th>
+                        <th>Phone</th>
+                        <th>GST No</th>
+                        <th>Total Sales (&#8377;)</th>
+                        <th>Total Paid (&#8377;)</th>
+                        <th>Balance Due (&#8377;)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="c : ${clients}">
+                        <td><strong th:text="${c.clientCode}"></strong></td>
+                        <td th:text="${c.name}"></td>
+                        <td th:text="${c.locality}"></td>
+                        <td th:text="${c.phoneNo}"></td>
+                        <td th:text="${c.gstNo != null ? c.gstNo : '-'}"></td>
+                        <td th:text="${#numbers.formatDecimal(c.totalSales, 1, 2)}">0.00</td>
+                        <td th:text="${#numbers.formatDecimal(c.totalPaid, 1, 2)}">0.00</td>
+                        <td>
+                            <span th:class="${c.totalDue > 0 ? 'badge badge-danger' : 'badge badge-success'}"
+                                  th:text="${#numbers.formatDecimal(c.totalDue, 1, 2)}">0.00</span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <a th:href="@{/clients/view/{id}(id=${c.clientCode})}" class="btn btn-sm btn-info">Summary</a>
+                                <a th:href="@{/clients/edit/{id}(id=${c.clientCode})}" class="btn btn-sm">Edit</a>
+                                <form th:action="@{/clients/delete/{id}(id=${c.clientCode})}" method="post" class="inline-form"
+                                      onsubmit="return confirm('Delete this client?');">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(clients)}">
+                        <td colspan="9" style="text-align: center; color: #64748b; padding: 25px;">No clients found.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div th:replace="~{layout :: pagination('/clients', ${currentPage}, ${totalPages}, ${totalRecords}, ${pageSize})}"></div>
     </div>
 </body>
 </html>

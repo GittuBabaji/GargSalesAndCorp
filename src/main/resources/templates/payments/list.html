@@ -4,17 +4,42 @@
 <body>
     <div th:replace="~{layout :: sidebar}"></div>
     <div class="content">
-        <h1>Payments Received <a href="/payments/new" class="btn btn-success">+ Receive Payment</a></h1>
-        <table>
-            <tr><th>Receipt No</th><th>Client</th><th>Date</th><th>Amount</th><th>Mode</th></tr>
-            <tr th:each="p : ${payments}">
-                <td th:text="${p.receiptNo}"></td>
-                <td th:text="${p.clientCode}"></td>
-                <td th:text="${p.dateReceived}"></td>
-                <td th:text="${p.amountReceived}"></td>
-                <td th:text="${p.paymentMode}"></td>
-            </tr>
-        </table>
+        <h1>
+            <span>Payments Received</span>
+            <a href="/payments/new" class="btn btn-success">+ Receive Payment</a>
+        </h1>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Receipt No</th>
+                        <th>Client</th>
+                        <th>Date</th>
+                        <th>Amount Received (&#8377;)</th>
+                        <th>Mode</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="p : ${payments}">
+                        <td><strong th:text="${p.receiptNo}"></strong></td>
+                        <td>
+                            <a th:href="@{/clients/view/{id}(id=${p.clientCode})}" th:text="${p.clientCode}" style="color: #3b82f6; font-weight: 500;"></a>
+                        </td>
+                        <td th:text="${p.dateReceived}"></td>
+                        <td style="color: #059669; font-weight: 600;" th:text="${#numbers.formatDecimal(p.amountReceived, 1, 2)}"></td>
+                        <td>
+                            <span class="badge badge-info" th:text="${p.paymentMode}"></span>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(payments)}">
+                        <td colspan="5" style="text-align: center; color: #64748b; padding: 25px;">No payments recorded.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div th:replace="~{layout :: pagination('/payments', ${currentPage}, ${totalPages}, ${totalRecords}, ${pageSize})}"></div>
     </div>
 </body>
 </html>

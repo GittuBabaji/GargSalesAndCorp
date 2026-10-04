@@ -4,25 +4,84 @@
 <body>
     <div th:replace="~{layout :: sidebar}"></div>
     <div class="content">
-        <h1>Suppliers <a href="/suppliers/new" class="btn btn-success">+ Add Supplier</a></h1>
-        <table>
-            <tr><th>Code</th><th>Name</th><th>Address</th><th>Locality</th><th>Phone</th><th>GST No</th><th>Actions</th></tr>
-            <tr th:each="s : ${suppliers}">
-                <td th:text="${s.supplierCode}"></td>
-                <td th:text="${s.name}"></td>
-                <td th:text="${s.address}"></td>
-                <td th:text="${s.locality}"></td>
-                <td th:text="${s.phoneNo}"></td>
-                <td th:text="${s.gstNo}"></td>
-                <td>
-                    <a th:href="@{/suppliers/edit/{id}(id=${s.supplierCode})}" class="btn">Edit</a>
-                    <form th:action="@{/suppliers/delete/{id}(id=${s.supplierCode})}" method="post" style="display:inline;"
-                          onsubmit="return confirm('Delete this supplier?');">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                </td>
-            </tr>
-        </table>
+        <h1>
+            <span>Suppliers Directory</span>
+            <a href="/suppliers/new" class="btn btn-success">+ Add Supplier</a>
+        </h1>
+
+        <!-- Feedback Messages -->
+        <div th:if="${param.error}" class="alert" th:text="${param.error}"></div>
+        <div th:if="${param.success}" class="alert alert-success" th:text="${param.success}"></div>
+
+        <!-- Summary KPIs per Supplier Segment -->
+        <div class="card-container">
+            <div class="card">
+                <h3>Total Suppliers</h3>
+                <div class="value" th:text="${totalRecords}">0</div>
+            </div>
+            <div class="card">
+                <h3>Total Purchases (&#8377;)</h3>
+                <div class="value" th:text="${#numbers.formatDecimal(totalPurchases, 1, 2)}">0.00</div>
+            </div>
+            <div class="card">
+                <h3>Total Amount Paid (&#8377;)</h3>
+                <div class="value" style="color: #059669;" th:text="${#numbers.formatDecimal(totalPaid, 1, 2)}">0.00</div>
+            </div>
+            <div class="card">
+                <h3>Outstanding Payable (&#8377;)</h3>
+                <div class="value" style="color: #dc2626;" th:text="${#numbers.formatDecimal(totalDue, 1, 2)}">0.00</div>
+            </div>
+        </div>
+
+        <!-- Suppliers Table -->
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Locality</th>
+                        <th>Phone</th>
+                        <th>GST No</th>
+                        <th>Total Purchases (&#8377;)</th>
+                        <th>Amount Paid (&#8377;)</th>
+                        <th>Balance Due (&#8377;)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="s : ${suppliers}">
+                        <td><strong th:text="${s.supplierCode}"></strong></td>
+                        <td th:text="${s.name}"></td>
+                        <td th:text="${s.locality}"></td>
+                        <td th:text="${s.phoneNo}"></td>
+                        <td th:text="${s.gstNo != null ? s.gstNo : '-'}"></td>
+                        <td th:text="${#numbers.formatDecimal(s.totalPurchases, 1, 2)}">0.00</td>
+                        <td th:text="${#numbers.formatDecimal(s.totalPaid, 1, 2)}">0.00</td>
+                        <td>
+                            <span th:class="${s.totalDue > 0 ? 'badge badge-danger' : 'badge badge-success'}"
+                                  th:text="${#numbers.formatDecimal(s.totalDue, 1, 2)}">0.00</span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <a th:href="@{/suppliers/view/{id}(id=${s.supplierCode})}" class="btn btn-sm btn-info">Summary</a>
+                                <a th:href="@{/suppliers/edit/{id}(id=${s.supplierCode})}" class="btn btn-sm">Edit</a>
+                                <form th:action="@{/suppliers/delete/{id}(id=${s.supplierCode})}" method="post" class="inline-form"
+                                      onsubmit="return confirm('Delete this supplier?');">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(suppliers)}">
+                        <td colspan="9" style="text-align: center; color: #64748b; padding: 25px;">No suppliers found.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div th:replace="~{layout :: pagination('/suppliers', ${currentPage}, ${totalPages}, ${totalRecords}, ${pageSize})}"></div>
     </div>
 </body>
 </html>
