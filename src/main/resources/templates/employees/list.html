@@ -6,7 +6,7 @@
     <div class="content">
         <h1>Employees</h1>
         <table>
-            <tr><th>Code</th><th>Name</th><th>Designation</th><th>Phone</th><th>Date of Joining</th><th>Salary</th><th>Period</th></tr>
+            <tr><th>Code</th><th>Name</th><th>Designation</th><th>Phone</th><th>Date of Joining</th><th>Salary</th></tr>
             <tr th:each="e : ${employees}">
                 <td th:text="${e.employeeCode}"></td>
                 <td th:text="${e.name}"></td>
@@ -14,7 +14,6 @@
                 <td th:text="${e.phoneNo}"></td>
                 <td th:text="${e.dateOfJoining}"></td>
                 <td th:text="${e.salary}"></td>
-                <td th:text="${e.periodId}"></td>
             </tr>
         </table>
     </div>
