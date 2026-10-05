@@ -34,7 +34,7 @@ The ER model represents a retail store with 10 tables handling sales, purchases,
 - **Payment_Received**: Tracks payments from clients.
 
 ## 12. JdbcTemplate Explanation
-Spring's JdbcTemplate is used for all database operations instead of JPA. It maps result sets to Java models directly.
+Spring's JdbcTemplate is used for all database operations. It maps result sets to Java models directly.
 
 ## 13. Thymeleaf Explanation
 Thymeleaf handles server-side rendering for the web pages, passing model attributes directly to HTML templates using tags like 	h:each and 	h:text.
