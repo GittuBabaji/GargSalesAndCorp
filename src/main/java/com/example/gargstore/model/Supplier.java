@@ -14,33 +14,83 @@ public class Supplier {
     private double totalPaid;
     private double totalDue;
 
-    public String getSupplierCode() { return supplierCode; }
-    public void setSupplierCode(String s) { supplierCode = s; }
+    public String getSupplierCode() {
+        return supplierCode;
+    }
 
-    public String getName() { return name; }
-    public void setName(String n) { name = n; }
+    public void setSupplierCode(String s) {
+        supplierCode = s;
+    }
 
-    public String getAddress() { return address; }
-    public void setAddress(String a) { address = a; }
+    public String getName() {
+        return name;
+    }
 
-    public String getLocality() { return locality; }
-    public void setLocality(String l) { locality = l; }
+    public void setName(String n) {
+        name = n;
+    }
 
-    public String getPhoneNo() { return phoneNo; }
-    public void setPhoneNo(String p) { phoneNo = p; }
+    public String getAddress() {
+        return address;
+    }
 
-    public String getGstNo() { return gstNo; }
-    public void setGstNo(String g) { gstNo = g; }
+    public void setAddress(String a) {
+        address = a;
+    }
 
-    public double getTotalPurchases() { return totalPurchases; }
-    public void setTotalPurchases(double totalPurchases) { this.totalPurchases = totalPurchases; }
+    public String getLocality() {
+        return locality;
+    }
 
-    public int getTotalBills() { return totalBills; }
-    public void setTotalBills(int totalBills) { this.totalBills = totalBills; }
+    public void setLocality(String l) {
+        locality = l;
+    }
 
-    public double getTotalPaid() { return totalPaid; }
-    public void setTotalPaid(double totalPaid) { this.totalPaid = totalPaid; }
+    public String getPhoneNo() {
+        return phoneNo;
+    }
 
-    public double getTotalDue() { return totalDue; }
-    public void setTotalDue(double totalDue) { this.totalDue = totalDue; }
+    public void setPhoneNo(String p) {
+        phoneNo = p;
+    }
+
+    public String getGstNo() {
+        return gstNo;
+    }
+
+    public void setGstNo(String g) {
+        gstNo = g;
+    }
+
+    public double getTotalPurchases() {
+        return totalPurchases;
+    }
+
+    public void setTotalPurchases(double totalPurchases) {
+        this.totalPurchases = totalPurchases;
+    }
+
+    public int getTotalBills() {
+        return totalBills;
+    }
+
+    public void setTotalBills(int totalBills) {
+        this.totalBills = totalBills;
+    }
+
+    public double getTotalPaid() {
+        return totalPaid;
+    }
+
+    public void setTotalPaid(double totalPaid) {
+        this.totalPaid = totalPaid;
+    }
+
+    public double getTotalDue() {
+        return totalDue;
+    }
+
+    public void setTotalDue(double totalDue) {
+        this.totalDue = totalDue;
+    }
 }

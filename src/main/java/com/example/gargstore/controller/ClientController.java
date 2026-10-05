@@ -1,4 +1,4 @@
-package com.example.gargstore.controller;
+ package com.example.gargstore.controller;
 
 import com.example.gargstore.model.Client;
 import com.example.gargstore.model.PaymentReceived;
